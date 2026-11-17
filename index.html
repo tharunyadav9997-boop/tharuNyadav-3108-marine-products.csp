@@ -2,613 +2,756 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marine Products | CSP Project</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="https://cdn.tailwindcss.com"></script>
+<title>Marine Products | CSP Project</title>
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        ocean: '#0f172a',
-                        aqua: '#06b6d4',
-                        sea: '#14b8a6',
-                    }
-                }
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            colors: {
+                ocean: '#0f172a',
+                aqua: '#06b6d4',
+                sea: '#14b8a6'
             }
         }
-    </script>
+    }
+}
+</script>
 
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            scroll-behavior: smooth;
-        }
+<style>
+body {
+    font-family: Arial, sans-serif;
+    scroll-behavior: smooth;
+}
 
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
+.ocean-bg {
+    background: linear-gradient(135deg,
+        #0f172a, #0891b2, #0d9488);
+}
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+.gallery-photo {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform .3s ease;
+}
 
-        .ocean-bg {
-            background: linear-gradient(
-                135deg,
-                #0f172a 0%,
-                #0891b2 50%,
-                #0d9488 100%
-            );
-        }
+.gallery-photo:hover {
+    transform: scale(1.03);
+}
 
-        /* All website photos */
-        .gallery-photo {
-            cursor: zoom-in;
-            transition: transform 0.3s ease;
-        }
+.page-section {
+    min-height: 65vh;
+}
 
-        .gallery-photo:hover {
-            transform: scale(1.03);
-        }
+.sub-section {
+    margin-top: 30px;
+}
 
-        /* Large Image Popup */
-        #image-modal {
-            display: none;
-            position: fixed;
-            z-index: 9999;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.92);
-            align-items: center;
-            justify-content: center;
-            padding: 50px 20px 20px;
-        }
+#image-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0,0,0,.94);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
 
-        #large-image {
-            max-width: 95%;
-            max-height: 85vh;
-            object-fit: contain;
-            border-radius: 12px;
-            box-shadow: 0 0 25px rgba(255,255,255,0.2);
-        }
+#large-image {
+    max-width: 95%;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 12px;
+}
 
-        #close-modal {
-            position: absolute;
-            top: 12px;
-            right: 25px;
-            color: white;
-            font-size: 42px;
-            cursor: pointer;
-            background: none;
-            border: none;
-        }
+#close-modal {
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    color: white;
+    font-size: 42px;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
 
-        #close-modal:hover {
-            color: #06b6d4;
-        }
-    </style>
+.hidden {
+    display: none !important;
+}
+</style>
 </head>
 
 <body class="bg-gray-50 text-gray-800">
 
-    <!-- NAVIGATION BAR -->
-    <nav class="bg-ocean text-white shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-
-                <div class="font-bold text-xl tracking-wider text-aqua">
-                    🌊 MARINE PRODUCTS
-                </div>
-
-                <div class="hidden md:flex space-x-6">
-                    <button onclick="switchPage('home-page')" class="hover:text-aqua font-medium">Home</button>
-                    <button onclick="switchPage('project-page')" class="hover:text-aqua font-medium">Project</button>
-                    <button onclick="switchPage('methods-page')" class="hover:text-aqua font-medium">Methods</button>
-                    <button onclick="switchPage('resources-page')" class="hover:text-aqua font-medium">Resources</button>
-                    <button onclick="switchPage('about-page')" class="text-aqua font-bold">About Us</button>
-                </div>
-
-                <div class="md:hidden">
-                    <button onclick="toggleMobileMenu()" class="text-white">
-                        ☰ Menu
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div id="mobile-menu" class="hidden md:hidden bg-ocean pb-4 px-4">
-            <button onclick="switchPage('home-page'); toggleMobileMenu()" class="block py-2">Home</button>
-            <button onclick="switchPage('project-page'); toggleMobileMenu()" class="block py-2">Project</button>
-            <button onclick="switchPage('methods-page'); toggleMobileMenu()" class="block py-2">Methods</button>
-            <button onclick="switchPage('resources-page'); toggleMobileMenu()" class="block py-2">Resources</button>
-            <button onclick="switchPage('about-page'); toggleMobileMenu()" class="block py-2">About Us</button>
-        </div>
-    </nav>
-
-    <main class="min-h-screen">
-
-        <!-- HOME PAGE -->
-        <section id="home-page" class="page-section fade-in">
-
-            <div class="ocean-bg text-white py-20 px-4 text-center">
-                <h1 class="text-4xl md:text-5xl font-bold mb-4">
-                    Explore Marine Products
-                </h1>
-
-                <p class="text-lg md:text-xl max-w-2xl mx-auto text-gray-200">
-                    Welcome to our Community Service Project.
-                    Dive into the world of marine resources,
-                    processing methods, and their benefits to society.
-                </p>
-            </div>
-
-            <div class="max-w-7xl mx-auto px-4 py-12">
-
-                <div id="home-buttons-grid" class="grid grid-cols-2 md:grid-cols-4 gap-6">
-
-                    <button onclick="showSubSection('sec-intro')" class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-aqua text-center h-32">
-                        <span class="text-xl font-bold text-ocean">Introduction</span>
-                    </button>
-
-                    <button onclick="showSubSection('sec-w1')" class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-sea text-center h-32">
-                        <span class="text-xl font-bold text-ocean">Week 1</span>
-                    </button>
-
-                    <button onclick="showSubSection('sec-w2')" class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-aqua text-center h-32">
-                        <span class="text-xl font-bold text-ocean">Week 2</span>
-                    </button>
-
-                    <button onclick="showSubSection('sec-w3')" class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-sea text-center h-32">
-                        <span class="text-xl font-bold text-ocean">Week 3</span>
-                    </button>
-
-                    <button onclick="showSubSection('sec-w4')" class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-aqua text-center h-32">
-                        <span class="text-xl font-bold text-ocean">Week 4</span>
-                    </button>
-
-                    <button onclick="showSubSection('sec-w5')" class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-sea text-center h-32">
-                        <span class="text-xl font-bold text-ocean">Week 5</span>
-                    </button>
-
-                    <button onclick="showSubSection('sec-w6')" class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-aqua text-center h-32">
-                        <span class="text-xl font-bold text-ocean">Week 6</span>
-                    </button>
-
-                    <button onclick="showSubSection('sec-conclusion')" class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-sea text-center h-32">
-                        <span class="text-xl font-bold text-ocean">Conclusion</span>
-                    </button>
-
-                </div>
-
-                <!-- INTRODUCTION -->
-                <div id="sec-intro" class="sub-section hidden fade-in bg-white p-8 rounded-xl shadow-lg border-l-8 border-aqua">
-                    <h2 class="text-3xl font-bold text-ocean mb-4">Introduction to Marine Products</h2>
-
-                    <img src="images/marine1.jpg" onclick="openImage(this)" onerror="this.src='https://placehold.co/800x400/0f172a/ffffff?text=Marine+Products'" class="gallery-photo w-full h-64 object-cover rounded-lg mb-6">
-
-                    <p class="text-gray-700 leading-relaxed mb-4">
-                        The marine products community refers to the network of industries, businesses, and individuals involved in the production, distribution, and consumption of marine-based products.
-                    </p>
-
-                    <p class="text-gray-700 leading-relaxed mb-4">
-                        Key sectors include <b>Marine Food Products</b>, <b>Marine Biotechnology</b>, <b>Marine Energy Products</b>, and <b>Marine Tourism</b>.
-                    </p>
+<!-- NAVIGATION -->
 
-                    <button onclick="backToHomeGrid()" class="mt-4 bg-ocean text-white px-6 py-2 rounded-full">← Back to Menu</button>
-                </div>
-
-                <!-- WEEK 1 -->
-                <div id="sec-w1" class="sub-section hidden fade-in bg-white p-8 rounded-xl shadow-lg border-l-8 border-sea">
-                    <h2 class="text-3xl font-bold text-ocean mb-4">Week 1: Introduction to Aqua Farming</h2>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <img src="images/week1-pic1.jpg" onclick="openImage(this)" onerror="this.src='https://placehold.co/400x300/06b6d4/ffffff?text=Week+1+Photo+1'" class="gallery-photo w-full h-48 object-cover rounded-lg shadow-md">
-                        <img src="images/week1-pic2.jpg" onclick="openImage(this)" onerror="this.src='https://placehold.co/400x300/14b8a6/ffffff?text=Week+1+Photo+2'" class="gallery-photo w-full h-48 object-cover rounded-lg shadow-md">
-                    </div>
+<nav class="bg-ocean text-white shadow-lg sticky top-0 z-50">
+<div class="max-w-7xl mx-auto px-4">
 
-                    <p class="text-gray-700 leading-relaxed mb-4">
-                        During the first week, we focused on understanding aqua farming. It involves cultivating freshwater and saltwater populations under controlled conditions.
-                    </p>
+<div class="flex justify-between items-center h-16">
 
-                    <button onclick="backToHomeGrid()" class="mt-4 bg-ocean text-white px-6 py-2 rounded-full">← Back to Menu</button>
-                </div>
+<div class="font-bold text-xl text-aqua">
+🌊 MARINE PRODUCTS
+</div>
 
-                <!-- WEEK 2 -->
-                <div id="sec-w2" class="sub-section hidden fade-in bg-white p-8 rounded-xl shadow-lg border-l-8 border-aqua">
-                    <h2 class="text-3xl font-bold text-ocean mb-4">Week 2: Pond Structure and Maintenance</h2>
+<div class="hidden md:flex space-x-6">
+<button onclick="switchPage('home-page')">Home</button>
+<button onclick="switchPage('project-page')">Project</button>
+<button onclick="switchPage('methods-page')">Methods</button>
+<button onclick="switchPage('resources-page')">Resources</button>
+<button onclick="switchPage('about-page')">About Us</button>
+</div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <img src="images/week2-pic1.jpg" onclick="openImage(this)" onerror="this.src='https://placehold.co/400x300/0f172a/ffffff?text=Week+2+Photo+1'" class="gallery-photo w-full h-48 object-cover rounded-lg shadow-md">
-                        <img src="images/week2-pic2.jpg" onclick="openImage(this)" onerror="this.src='https://placehold.co/400x300/06b6d4/ffffff?text=Week+2+Photo+2'" class="gallery-photo w-full h-48 object-cover rounded-lg shadow-md">
-                    </div>
+<button class="md:hidden" onclick="toggleMobileMenu()">
+☰ Menu
+</button>
 
-                    <p class="text-gray-700 leading-relaxed mb-4">
-                        We studied pond structures. The optimum size of a fish pond is rectangular with a depth of 5 to 6 feet.
-                    </p>
+</div>
+</div>
 
-                    <button onclick="backToHomeGrid()" class="mt-4 bg-ocean text-white px-6 py-2 rounded-full">← Back to Menu</button>
-                </div>
-
-                <!-- WEEK 3 -->
-                <div id="sec-w3" class="sub-section hidden fade-in bg-white p-8 rounded-xl shadow-lg border-l-8 border-sea">
-                    <h2 class="text-3xl font-bold text-ocean mb-4">Week 3: Diseases, Feeds, and Chemicals</h2>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <img src="images/week3-pic1.jpg" onclick="openImage(this)" onerror="this.src='https://placehold.co/400x300/14b8a6/ffffff?text=Week+3+Photo+1'" class="gallery-photo w-full h-48 object-cover rounded-lg shadow-md">
-                        <img src="images/week3-pic2.jpg" onclick="openImage(this)" onerror="this.src='https://placehold.co/400x300/0f172a/ffffff?text=Week+3+Photo+2'" class="gallery-photo w-full h-48 object-cover rounded-lg shadow-md">
-                    </div>
-
-                    <p class="text-gray-700 leading-relaxed mb-4">
-                        We learned about fish diseases like 'Red Pest' and studied aqua feeds like fishmeal and soybean meal that provide essential nutrients.
-                    </p>
-
-                    <button onclick="backToHomeGrid()" class="mt-4 bg-ocean text-white px-6 py-2 rounded-full">← Back to Menu</button>
-                </div>
+<div id="mobile-menu" class="hidden bg-ocean p-4 md:hidden">
+<button class="block py-2" onclick="switchPage('home-page');toggleMobileMenu()">Home</button>
+<button class="block py-2" onclick="switchPage('project-page');toggleMobileMenu()">Project</button>
+<button class="block py-2" onclick="switchPage('methods-page');toggleMobileMenu()">Methods</button>
+<button class="block py-2" onclick="switchPage('resources-page');toggleMobileMenu()">Resources</button>
+<button class="block py-2" onclick="switchPage('about-page');toggleMobileMenu()">About Us</button>
+</div>
+</nav>
 
-                <!-- WEEK 4 -->
-                <div id="sec-w4" class="sub-section hidden fade-in bg-white p-8 rounded-xl shadow-lg border-l-8 border-aqua">
-                    <h2 class="text-3xl font-bold text-ocean mb-4">Week 4: Identifying Fish Diseases</h2>
+<main>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <img src="images/week4-pic1.jpg" onclick="openImage(this)" onerror="this.src='https://placehold.co/400x300/06b6d4/ffffff?text=Week+4+Photo+1'" class="gallery-photo w-full h-48 object-cover rounded-lg shadow-md">
-                        <img src="images/week4-pic2.jpg" onclick="openImage(this)" onerror="this.src='https://placehold.co/400x300/14b8a6/ffffff?text=Week+4+Photo+2'" class="gallery-photo w-full h-48 object-cover rounded-lg shadow-md">
-                    </div>
+<!-- HOME PAGE -->
 
-                    <p class="text-gray-700 leading-relaxed mb-4">
-                        We observed major fish diseases causing problems in the ponds, such as Head and Lateral disease, Eye problems, and Swim bladder disease.
-                    </p>
+<section id="home-page" class="page-section">
 
-                    <button onclick="backToHomeGrid()" class="mt-4 bg-ocean text-white px-6 py-2 rounded-full">← Back to Menu</button>
-                </div>
+<div class="ocean-bg text-white text-center py-20 px-4">
 
-                <!-- WEEK 5 -->
-                <div id="sec-w5" class="sub-section hidden fade-in bg-white p-8 rounded-xl shadow-lg border-l-8 border-sea">
-                    <h2 class="text-3xl font-bold text-ocean mb-4">Week 5: Implementing Treatments</h2>
+<h1 class="text-4xl md:text-5xl font-bold mb-4">
+Explore Marine Products
+</h1>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <img src="images/week5-pic1.jpg" onclick="openImage(this)" onerror="this.src='https://placehold.co/400x300/0f172a/ffffff?text=Week+5+Photo+1'" class="gallery-photo w-full h-48 object-cover rounded-lg shadow-md">
-                        <img src="images/week5-pic2.jpg" onclick="openImage(this)" onerror="this.src='https://placehold.co/400x300/06b6d4/ffffff?text=Week+5+Photo+2'" class="gallery-photo w-full h-48 object-cover rounded-lg shadow-md">
-                    </div>
+<p class="text-lg max-w-2xl mx-auto">
+Welcome to our Community Service Project.
+Explore marine resources, aqua farming,
+processing methods and their benefits to society.
+</p>
 
-                    <p class="text-gray-700 leading-relaxed mb-4">
-                        In week five, we successfully implemented treatments. For example, we cleaned the pond with a potassium permanganate bath to treat infections.
-                    </p>
+<button onclick="switchPage('project-page')"
+class="mt-8 bg-white text-ocean px-8 py-3 rounded-full font-bold">
+Explore Our Photos
+</button>
 
-                    <button onclick="backToHomeGrid()" class="mt-4 bg-ocean text-white px-6 py-2 rounded-full">← Back to Menu</button>
-                </div>
+</div>
 
-                <!-- WEEK 6 -->
-                <div id="sec-w6" class="sub-section hidden fade-in bg-white p-8 rounded-xl shadow-lg border-l-8 border-aqua">
-                    <h2 class="text-3xl font-bold text-ocean mb-4">Week 6: Growth, Feeding, and Harvesting</h2>
+<div class="max-w-7xl mx-auto px-4 py-12">
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <img src="images/week6-pic1.jpg" onclick="openImage(this)" onerror="this.src='https://placehold.co/400x300/14b8a6/ffffff?text=Week+6+Photo+1'" class="gallery-photo w-full h-48 object-cover rounded-lg shadow-md">
-                        <img src="images/week6-pic2.jpg" onclick="openImage(this)" onerror="this.src='https://placehold.co/400x300/0f172a/ffffff?text=Week+6+Photo+2'" class="gallery-photo w-full h-48 object-cover rounded-lg shadow-md">
-                    </div>
+<h2 class="text-3xl font-bold text-center text-ocean mb-8">
+Project Activities
+</h2>
 
-                    <p class="text-gray-700 leading-relaxed mb-4">
-                        The final week focused on growth and harvesting. We learned that freshwater prawn farming requires water salinity of 3-4 ppt and strict calcium management.
-                    </p>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-5">
 
-                    <button onclick="backToHomeGrid()" class="mt-4 bg-ocean text-white px-6 py-2 rounded-full">← Back to Menu</button>
-                </div>
-
-                <!-- CONCLUSION -->
-                <div id="sec-conclusion" class="sub-section hidden fade-in bg-white p-8 rounded-xl shadow-lg border-l-8 border-sea">
-                    <h2 class="text-3xl font-bold text-ocean mb-4">Conclusion & Mini Project</h2>
-
-                    <p class="text-gray-700 leading-relaxed mb-4">
-                        To conclude, we focused on <b>Sustainable Aquaculture Practices for Marine Products</b> to ensure the long-term health of our oceans (e.g., RAS and IMTA).
-                    </p>
+<button onclick="showSubSection('sec-intro')" class="bg-white p-6 rounded-xl shadow border-t-4 border-aqua">
+Introduction
+</button>
 
-                    <button onclick="backToHomeGrid()" class="mt-4 bg-ocean text-white px-6 py-2 rounded-full">← Back to Menu</button>
-                </div>
+<button onclick="showSubSection('sec-w1')" class="bg-white p-6 rounded-xl shadow border-t-4 border-sea">
+Week 1
+</button>
 
-            </div>
-        </section>
+<button onclick="showSubSection('sec-w2')" class="bg-white p-6 rounded-xl shadow border-t-4 border-aqua">
+Week 2
+</button>
 
-        <!-- PROJECT PAGE -->
-        <section id="project-page" class="page-section hidden fade-in py-12 bg-gray-100">
-            <div class="max-w-7xl mx-auto px-4">
-
-                <h1 class="text-4xl font-bold text-center text-ocean mb-10">
-                    Marine Products Project
-                </h1>
-
-                <div class="grid md:grid-cols-2 gap-8 mb-12">
-
-                    <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-aqua">
-                        <h3 class="text-2xl font-bold text-ocean mb-3">Project Summary</h3>
-                        <p class="text-gray-600">
-                            This project aims to analyze the availability, processing, and economic importance of marine products in local coastal communities.
-                        </p>
-                    </div>
-
-                    <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-sea">
-                        <h3 class="text-2xl font-bold text-ocean mb-3">Project Objectives</h3>
-                        <ul class="list-disc list-inside text-gray-600 space-y-2">
-                            <li>Identify common marine resources.</li>
-                            <li>Study processing and preservation methods.</li>
-                            <li>Understand economic benefits to locals.</li>
-                            <li>Promote sustainable harvesting.</li>
-                        </ul>
-                    </div>
-
-                </div>
-
-                <h2 class="text-3xl font-bold text-center text-ocean mb-8">
-                    CSP PHOTO GALLERY
-                </h2>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-
-                    <img src="images/marine1.jpg" onclick="openImage(this)" onerror="this.src='https://placehold.co/600x400/06b6d4/ffffff?text=Marine+Photo+1'" class="gallery-photo w-full h-48 object-cover rounded-xl shadow-lg">
-
-                    <img src="images/marine2.jpg" onclick="openImage(this)" onerror="this.src='https://placehold.co/600x400/14b8a6/ffffff?text=Marine+Photo+2'" class="gallery-photo w-full h-48 object-cover rounded-xl shadow-lg">
-
-                    <img src="images/marine3.jpg" onclick="openImage(this)" onerror="this.src='https://placehold.co/600x400/0f172a/ffffff?text=Marine+Photo+3'" class="gallery-photo w-full h-48 object-cover rounded-xl shadow-lg">
-
-                </div>
-            </div>
-        </section>
-
-        <!-- METHODS PAGE -->
-        <section id="methods-page" class="page-section hidden fade-in py-12">
-            <div class="max-w-5xl mx-auto px-4">
-
-                <h1 class="text-4xl font-bold text-center text-ocean mb-10">
-                    Processing Methods
-                </h1>
-
-                <div class="bg-white rounded-xl shadow-xl overflow-hidden flex flex-col md:flex-row">
-
-                    <div class="md:w-1/2 p-8">
-                        <h3 class="text-2xl font-bold text-aqua mb-4">
-                            How are they processed?
-                        </h3>
-
-                        <p class="text-gray-700 mb-4">
-                            Proper processing is essential to increase their shelf life and maintain nutritional value.
-                        </p>
-
-                        <ul class="space-y-3 text-gray-600">
-                            <li><strong class="text-ocean">1. Sun Drying:</strong> Removing moisture using sunlight.</li>
-                            <li><strong class="text-ocean">2. Salting:</strong> Adding salt to draw out water.</li>
-                            <li><strong class="text-ocean">3. Freezing:</strong> Rapidly lowering temperature.</li>
-                            <li><strong class="text-ocean">4. Canning:</strong> Sealing products in airtight containers.</li>
-                        </ul>
-                    </div>
-
-                    <div class="md:w-1/2 bg-sea p-8 text-white flex items-center justify-center">
-                        <p class="text-xl text-center italic font-semibold">
-                            "Proper processing prevents waste and ensures food security for millions worldwide."
-                        </p>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- RESOURCES PAGE -->
-        <section id="resources-page" class="page-section hidden fade-in py-12 bg-gray-100">
-            <div class="max-w-5xl mx-auto px-4">
-
-                <h1 class="text-4xl font-bold text-center text-ocean mb-10">
-                    Marine Resources
-                </h1>
-
-                <div class="grid md:grid-cols-2 gap-8">
-
-                    <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-aqua">
-                        <h4 class="text-xl font-bold text-ocean">Edible Resources</h4>
-                        <p class="mt-2 text-gray-600">
-                            Includes various species of fish, crabs, lobsters, shrimp, and seaweeds.
-                        </p>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-sea">
-                        <h4 class="text-xl font-bold text-ocean">Industrial Resources</h4>
-                        <p class="mt-2 text-gray-600">
-                            Fish oils, fish meal for agriculture, and decorative shells.
-                        </p>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-aqua">
-                        <h4 class="text-xl font-bold text-ocean">Medicinal Resources</h4>
-                        <p class="mt-2 text-gray-600">
-                            Sponges and corals are researched for anti-cancer and anti-inflammatory drugs.
-                        </p>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-sea">
-                        <h4 class="text-xl font-bold text-ocean">Mineral Resources</h4>
-                        <p class="mt-2 text-gray-600">
-                            Salt extraction is common, and oceans provide valuable mineral nodules.
-                        </p>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- ABOUT US PAGE -->
-        <section id="about-page" class="page-section hidden fade-in py-12">
-            <div class="max-w-6xl mx-auto px-4">
-
-                <div class="text-center mb-12">
-                    <h1 class="text-4xl font-bold text-ocean mb-4">
-                        About Our Team
-                    </h1>
-
-                    <p class="text-gray-600 max-w-2xl mx-auto">
-                        We are a dedicated group of students working on our Community Service Project.
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-
-                    <!-- MEMBER 1 -->
-                    <div class="bg-white rounded-xl shadow-lg overflow-hidden text-center border-b-4 border-aqua">
-                        <img src="images/team1.jpg" onclick="openImage(this)" onerror="this.src='https://placehold.co/400x400/06b6d4/ffffff?text=Challa+Tharun'" class="gallery-photo w-full h-56 object-cover">
-
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-ocean">Challa Tharun Yadav</h3>
-                            <p class="text-sm text-gray-500 mt-1">Project Leader</p>
-                        </div>
-                    </div>
-
-                    <!-- MEMBER 2 -->
-                    <div class="bg-white rounded-xl shadow-lg overflow-hidden text-center border-b-4 border-sea">
-                        <img src="images/team2.jpg" onclick="openImage(this)" onerror="this.src='https://placehold.co/400x400/14b8a6/ffffff?text=B.+Chennakesava'" class="gallery-photo w-full h-56 object-cover">
-
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-ocean">B. Chennakesava Reddy</h3>
-                            <p class="text-sm text-gray-500 mt-1">Data Analyst</p>
-                        </div>
-                    </div>
+<button onclick="showSubSection('sec-w3')" class="bg-white p-6 rounded-xl shadow border-t-4 border-sea">
+Week 3
+</button>
 
-                    <!-- MEMBER 3 -->
-                    <div class="bg-white rounded-xl shadow-lg overflow-hidden text-center border-b-4 border-aqua">
-                        <img src="images/team3.jpg" onclick="openImage(this)" onerror="this.src='https://placehold.co/400x400/0f172a/ffffff?text=Ch.+Venkatesh'" class="gallery-photo w-full h-56 object-cover">
+<button onclick="showSubSection('sec-w4')" class="bg-white p-6 rounded-xl shadow border-t-4 border-aqua">
+Week 4
+</button>
 
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-ocean">Ch. Venkatesh</h3>
-                            <p class="text-sm text-gray-500 mt-1">Researcher</p>
-                        </div>
-                    </div>
+<button onclick="showSubSection('sec-w5')" class="bg-white p-6 rounded-xl shadow border-t-4 border-sea">
+Week 5
+</button>
 
-                    <!-- MEMBER 4 -->
-                    <div class="bg-white rounded-xl shadow-lg overflow-hidden text-center border-b-4 border-sea">
-                        <img src="images/team4.jpg" onclick="openImage(this)" onerror="this.src='https://placehold.co/400x400/0891b2/ffffff?text=B.+Tharun'" class="gallery-photo w-full h-56 object-cover">
+<button onclick="showSubSection('sec-w6')" class="bg-white p-6 rounded-xl shadow border-t-4 border-aqua">
+Week 6
+</button>
 
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-ocean">B. Tharun</h3>
-                            <p class="text-sm text-gray-500 mt-1">Field Reporter</p>
-                        </div>
-                    </div>
+<button onclick="showSubSection('sec-conclusion')" class="bg-white p-6 rounded-xl shadow border-t-4 border-sea">
+Conclusion
+</button>
 
-                </div>
-            </div>
-        </section>
+</div>
 
-    </main>
+<!-- INTRODUCTION -->
 
-    <!-- FOOTER -->
-    <footer class="bg-ocean text-white py-8 text-center mt-auto">
-        <p class="text-gray-400">
-            © 2026 Marine Products CSP. Built with dedication.
-        </p>
-    </footer>
+<div id="sec-intro" class="sub-section hidden bg-white p-8 rounded-xl shadow-lg">
 
-    <!-- LARGE IMAGE POPUP -->
-    <div id="image-modal" onclick="closeImage()">
-        <button id="close-modal" onclick="closeImage()" aria-label="Close image">
-            ×
-        </button>
+<h2 class="text-3xl font-bold text-ocean mb-5">
+Introduction to Marine Products
+</h2>
 
-        <img id="large-image" src="" alt="Large Preview"
-             onclick="event.stopPropagation()">
-    </div>
+<img src="images/marine1.jpg" alt="Marine Products"
+class="gallery-photo mb-6" onclick="openImage(this)">
 
-    <!-- JAVASCRIPT -->
-    <script>
+<p class="leading-relaxed">
+The marine products community refers to industries,
+businesses and individuals involved in the production,
+distribution and consumption of marine-based products.
+Key sectors include marine food products, marine
+biotechnology, marine energy and marine tourism.
+</p>
 
-        // Start on About Us page
-        document.addEventListener('DOMContentLoaded', function() {
-            switchPage('about-page');
-        });
+<button onclick="backToHomeGrid()" class="mt-6 bg-ocean text-white px-6 py-2 rounded-full">
+← Back to Menu
+</button>
+</div>
 
-        // Switch main pages
-        function switchPage(targetPageId) {
+<!-- WEEK 1 -->
 
-            let pages = document.querySelectorAll('.page-section');
+<div id="sec-w1" class="sub-section hidden bg-white p-8 rounded-xl shadow-lg">
 
-            pages.forEach(function(page) {
-                page.classList.add('hidden');
-            });
+<h2 class="text-3xl font-bold text-ocean mb-5">
+Week 1: Introduction to Aqua Farming
+</h2>
 
-            document.getElementById(targetPageId).classList.remove('hidden');
+<div class="grid md:grid-cols-2 gap-5">
+<img src="images/week1-pic1.jpg" alt="Week 1 Activity 1" class="gallery-photo" onclick="openImage(this)">
+<img src="images/week1-pic2.jpg" alt="Week 1 Activity 2" class="gallery-photo" onclick="openImage(this)">
+</div>
 
-            window.scrollTo(0, 0);
-        }
+<p class="mt-5">
+During the first week, we focused on understanding
+aqua farming. It involves cultivating freshwater
+and saltwater populations under controlled conditions.
+</p>
 
-        // Show Home subsections
-        function showSubSection(sectionId) {
+<button onclick="backToHomeGrid()" class="mt-6 bg-ocean text-white px-6 py-2 rounded-full">
+← Back to Menu
+</button>
+</div>
 
-            document.getElementById('home-buttons-grid').classList.add('hidden');
+<!-- WEEK 2 -->
 
-            let sections = document.querySelectorAll('.sub-section');
+<div id="sec-w2" class="sub-section hidden bg-white p-8 rounded-xl shadow-lg">
 
-            sections.forEach(function(sec) {
-                sec.classList.add('hidden');
-            });
+<h2 class="text-3xl font-bold text-ocean mb-5">
+Week 2: Pond Structure and Maintenance
+</h2>
 
-            document.getElementById(sectionId).classList.remove('hidden');
-        }
+<div class="grid md:grid-cols-2 gap-5">
+<img src="images/week2-pic1.jpg" alt="Week 2 Activity 1" class="gallery-photo" onclick="openImage(this)">
+<img src="images/week2-pic2.jpg" alt="Week 2 Activity 2" class="gallery-photo" onclick="openImage(this)">
+</div>
 
-        // Back to Home menu
-        function backToHomeGrid() {
+<p class="mt-5">
+We studied pond structures, pond preparation,
+maintenance and water management practices.
+</p>
 
-            let sections = document.querySelectorAll('.sub-section');
+<button onclick="backToHomeGrid()" class="mt-6 bg-ocean text-white px-6 py-2 rounded-full">
+← Back to Menu
+</button>
+</div>
 
-            sections.forEach(function(sec) {
-                sec.classList.add('hidden');
-            });
+<!-- WEEK 3 -->
 
-            document.getElementById('home-buttons-grid').classList.remove('hidden');
-        }
+<div id="sec-w3" class="sub-section hidden bg-white p-8 rounded-xl shadow-lg">
 
-        // Mobile menu
-        function toggleMobileMenu() {
+<h2 class="text-3xl font-bold text-ocean mb-5">
+Week 3: Diseases, Feeds and Chemicals
+</h2>
 
-            let menu = document.getElementById('mobile-menu');
+<div class="grid md:grid-cols-2 gap-5">
+<img src="images/week3-pic1.jpg" alt="Week 3 Activity 1" class="gallery-photo" onclick="openImage(this)">
+<img src="images/week3-pic2.jpg" alt="Week 3 Activity 2" class="gallery-photo" onclick="openImage(this)">
+</div>
 
-            menu.classList.toggle('hidden');
-        }
+<p class="mt-5">
+We learned about fish diseases and studied aqua feeds
+that provide essential nutrients for fish growth.
+</p>
 
-        // Open clicked image in large size
-        function openImage(imgElement) {
+<button onclick="backToHomeGrid()" class="mt-6 bg-ocean text-white px-6 py-2 rounded-full">
+← Back to Menu
+</button>
+</div>
 
-            const modal = document.getElementById('image-modal');
-            const largeImage = document.getElementById('large-image');
+<!-- WEEK 4 -->
 
-            largeImage.src = imgElement.src;
+<div id="sec-w4" class="sub-section hidden bg-white p-8 rounded-xl shadow-lg">
 
-            modal.style.display = 'flex';
+<h2 class="text-3xl font-bold text-ocean mb-5">
+Week 4: Identifying Fish Diseases
+</h2>
 
-            document.body.style.overflow = 'hidden';
-        }
+<div class="grid md:grid-cols-2 gap-5">
+<img src="images/week4-pic1.jpg" alt="Week 4 Activity 1" class="gallery-photo" onclick="openImage(this)">
+<img src="images/week4-pic2.jpg" alt="Week 4 Activity 2" class="gallery-photo" onclick="openImage(this)">
+</div>
 
-        // Close large image popup
-        function closeImage() {
+<p class="mt-5">
+We observed fish health conditions and learned about
+different diseases affecting fish farming.
+</p>
 
-            const modal = document.getElementById('image-modal');
+<button onclick="backToHomeGrid()" class="mt-6 bg-ocean text-white px-6 py-2 rounded-full">
+← Back to Menu
+</button>
+</div>
 
-            modal.style.display = 'none';
+<!-- WEEK 5 -->
 
-            document.body.style.overflow = 'auto';
-        }
+<div id="sec-w5" class="sub-section hidden bg-white p-8 rounded-xl shadow-lg">
 
-        // Close image using Escape key
-        document.addEventListener('keydown', function(event) {
+<h2 class="text-3xl font-bold text-ocean mb-5">
+Week 5: Implementing Treatments
+</h2>
 
-            if (event.key === 'Escape') {
-                closeImage();
-            }
+<div class="grid md:grid-cols-2 gap-5">
+<img src="images/week5-pic1.jpg" alt="Week 5 Activity 1" class="gallery-photo" onclick="openImage(this)">
+<img src="images/week5-pic2.jpg" alt="Week 5 Activity 2" class="gallery-photo" onclick="openImage(this)">
+</div>
 
-        });
+<p class="mt-5">
+We learned about pond treatment, water quality
+management and fish health maintenance.
+</p>
 
-    </script>
+<button onclick="backToHomeGrid()" class="mt-6 bg-ocean text-white px-6 py-2 rounded-full">
+← Back to Menu
+</button>
+</div>
+
+<!-- WEEK 6 -->
+
+<div id="sec-w6" class="sub-section hidden bg-white p-8 rounded-xl shadow-lg">
+
+<h2 class="text-3xl font-bold text-ocean mb-5">
+Week 6: Growth, Feeding and Harvesting
+</h2>
+
+<div class="grid md:grid-cols-2 gap-5">
+<img src="images/week6-pic1.jpg" alt="Week 6 Activity 1" class="gallery-photo" onclick="openImage(this)">
+<img src="images/week6-pic2.jpg" alt="Week 6 Activity 2" class="gallery-photo" onclick="openImage(this)">
+</div>
+
+<p class="mt-5">
+The final week focused on fish growth, feeding
+practices and harvesting methods.
+</p>
+
+<button onclick="backToHomeGrid()" class="mt-6 bg-ocean text-white px-6 py-2 rounded-full">
+← Back to Menu
+</button>
+</div>
+
+<!-- CONCLUSION -->
+
+<div id="sec-conclusion" class="sub-section hidden bg-white p-8 rounded-xl shadow-lg">
+
+<h2 class="text-3xl font-bold text-ocean mb-5">
+Conclusion & Mini Project
+</h2>
+
+<p>
+Through this Community Service Project, we gained
+practical knowledge about marine products, aqua farming,
+fish health, pond management and sustainable practices.
+</p>
+
+<button onclick="backToHomeGrid()" class="mt-6 bg-ocean text-white px-6 py-2 rounded-full">
+← Back to Menu
+</button>
+</div>
+
+</div>
+</section>
+
+<!-- PROJECT PAGE: ALL 19 PHOTOS -->
+
+<section id="project-page" class="page-section hidden py-12 bg-gray-100">
+
+<div class="max-w-7xl mx-auto px-4">
+
+<h1 class="text-4xl font-bold text-center text-ocean mb-5">
+Marine Products Project
+</h1>
+
+<p class="text-center text-gray-600 mb-10">
+Our Community Service Project activities and field observations.
+</p>
+
+<div class="bg-white p-8 rounded-xl shadow mb-12">
+
+<h2 class="text-2xl font-bold text-ocean mb-4">
+Project Summary
+</h2>
+
+<p class="text-gray-600">
+This project aims to understand marine products,
+aquaculture, fish farming, processing methods
+and their economic importance to local communities.
+</p>
+
+<h2 class="text-2xl font-bold text-ocean mt-8 mb-4">
+Project Objectives
+</h2>
+
+<ul class="list-disc list-inside text-gray-600 space-y-2">
+<li>Identify common marine resources.</li>
+<li>Study processing and preservation methods.</li>
+<li>Understand economic benefits to local communities.</li>
+<li>Promote sustainable aquaculture practices.</li>
+</ul>
+
+</div>
+
+<!-- MARINE PHOTOS -->
+
+<h2 class="text-3xl font-bold text-center text-ocean mb-7">
+Marine Products Gallery
+</h2>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-12">
+
+<div>
+<img src="images/marine1.jpg" alt="Marine Products 1" class="gallery-photo shadow-lg" onclick="openImage(this)">
+<p class="text-center font-semibold mt-3">Marine Products</p>
+</div>
+
+<div>
+<img src="images/marine2.jpg" alt="Marine Products 2" class="gallery-photo shadow-lg" onclick="openImage(this)">
+<p class="text-center font-semibold mt-3">Marine Field Visit</p>
+</div>
+
+<div>
+<img src="images/marine3.jpg" alt="Marine Products 3" class="gallery-photo shadow-lg" onclick="openImage(this)">
+<p class="text-center font-semibold mt-3">Marine Activity</p>
+</div>
+
+</div>
+
+<!-- WEEK 1 -->
+
+<h2 class="text-3xl font-bold text-ocean mb-6">
+Week 1 Activities
+</h2>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
+<img src="images/week1-pic1.jpg" alt="Week 1 Photo 1" class="gallery-photo shadow-lg" onclick="openImage(this)">
+<img src="images/week1-pic2.jpg" alt="Week 1 Photo 2" class="gallery-photo shadow-lg" onclick="openImage(this)">
+</div>
+
+<!-- WEEK 2 -->
+
+<h2 class="text-3xl font-bold text-ocean mb-6">
+Week 2 Activities
+</h2>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
+<img src="images/week2-pic1.jpg" alt="Week 2 Photo 1" class="gallery-photo shadow-lg" onclick="openImage(this)">
+<img src="images/week2-pic2.jpg" alt="Week 2 Photo 2" class="gallery-photo shadow-lg" onclick="openImage(this)">
+</div>
+
+<!-- WEEK 3 -->
+
+<h2 class="text-3xl font-bold text-ocean mb-6">
+Week 3 Activities
+</h2>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
+<img src="images/week3-pic1.jpg" alt="Week 3 Photo 1" class="gallery-photo shadow-lg" onclick="openImage(this)">
+<img src="images/week3-pic2.jpg" alt="Week 3 Photo 2" class="gallery-photo shadow-lg" onclick="openImage(this)">
+</div>
+
+<!-- WEEK 4 -->
+
+<h2 class="text-3xl font-bold text-ocean mb-6">
+Week 4 Activities
+</h2>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
+<img src="images/week4-pic1.jpg" alt="Week 4 Photo 1" class="gallery-photo shadow-lg" onclick="openImage(this)">
+<img src="images/week4-pic2.jpg" alt="Week 4 Photo 2" class="gallery-photo shadow-lg" onclick="openImage(this)">
+</div>
+
+<!-- WEEK 5 -->
+
+<h2 class="text-3xl font-bold text-ocean mb-6">
+Week 5 Activities
+</h2>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
+<img src="images/week5-pic1.jpg" alt="Week 5 Photo 1" class="gallery-photo shadow-lg" onclick="openImage(this)">
+<img src="images/week5-pic2.jpg" alt="Week 5 Photo 2" class="gallery-photo shadow-lg" onclick="openImage(this)">
+</div>
+
+<!-- WEEK 6 -->
+
+<h2 class="text-3xl font-bold text-ocean mb-6">
+Week 6 Activities
+</h2>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
+<img src="images/week6-pic1.jpg" alt="Week 6 Photo 1" class="gallery-photo shadow-lg" onclick="openImage(this)">
+<img src="images/week6-pic2.jpg" alt="Week 6 Photo 2" class="gallery-photo shadow-lg" onclick="openImage(this)">
+</div>
+
+</div>
+</section>
+
+<!-- METHODS PAGE -->
+
+<section id="methods-page" class="page-section hidden py-12">
+
+<div class="max-w-5xl mx-auto px-4">
+
+<h1 class="text-4xl font-bold text-center text-ocean mb-10">
+Processing Methods
+</h1>
+
+<div class="bg-white rounded-xl shadow-xl p-8">
+
+<h2 class="text-2xl font-bold text-aqua mb-5">
+How are Marine Products Processed?
+</h2>
+
+<p class="mb-5">
+Proper processing is essential to increase shelf life
+and maintain nutritional value.
+</p>
+
+<ul class="space-y-4 text-gray-600">
+<li><b>1. Sun Drying:</b> Removing moisture using sunlight.</li>
+<li><b>2. Salting:</b> Adding salt to preserve products.</li>
+<li><b>3. Freezing:</b> Rapidly lowering temperature.</li>
+<li><b>4. Canning:</b> Sealing products in airtight containers.</li>
+</ul>
+
+</div>
+</div>
+</section>
+
+<!-- RESOURCES PAGE -->
+
+<section id="resources-page" class="page-section hidden py-12 bg-gray-100">
+
+<div class="max-w-5xl mx-auto px-4">
+
+<h1 class="text-4xl font-bold text-center text-ocean mb-10">
+Marine Resources
+</h1>
+
+<div class="grid md:grid-cols-2 gap-8">
+
+<div class="bg-white p-6 rounded-xl shadow">
+<h2 class="text-xl font-bold text-ocean">Edible Resources</h2>
+<p class="mt-2 text-gray-600">
+Fish, crabs, lobsters, shrimp and seaweeds.
+</p>
+</div>
+
+<div class="bg-white p-6 rounded-xl shadow">
+<h2 class="text-xl font-bold text-ocean">Industrial Resources</h2>
+<p class="mt-2 text-gray-600">
+Fish oils, fish meal and decorative shells.
+</p>
+</div>
+
+<div class="bg-white p-6 rounded-xl shadow">
+<h2 class="text-xl font-bold text-ocean">Medicinal Resources</h2>
+<p class="mt-2 text-gray-600">
+Marine organisms are researched for medicinal uses.
+</p>
+</div>
+
+<div class="bg-white p-6 rounded-xl shadow">
+<h2 class="text-xl font-bold text-ocean">Mineral Resources</h2>
+<p class="mt-2 text-gray-600">
+Salt and valuable minerals from oceans.
+</p>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- ABOUT US PAGE -->
+
+<section id="about-page" class="page-section hidden py-12">
+
+<div class="max-w-6xl mx-auto px-4">
+
+<h1 class="text-4xl font-bold text-center text-ocean mb-5">
+About Our Team
+</h1>
+
+<p class="text-center text-gray-600 mb-12">
+We are a dedicated group of students working
+on our Community Service Project.
+</p>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
+<div class="bg-white rounded-xl shadow-lg overflow-hidden text-center">
+<img src="images/team1.jpg" alt="Challa Tharun Yadav" class="gallery-photo" onclick="openImage(this)">
+<div class="p-5">
+<h3 class="font-bold text-ocean text-lg">Challa Tharun Yadav</h3>
+<p class="text-gray-500">Project Leader</p>
+</div>
+</div>
+
+<div class="bg-white rounded-xl shadow-lg overflow-hidden text-center">
+<img src="images/team2.jpg" alt="B. Chennakesava Reddy" class="gallery-photo" onclick="openImage(this)">
+<div class="p-5">
+<h3 class="font-bold text-ocean text-lg">B. Chennakesava Reddy</h3>
+<p class="text-gray-500">Data Analyst</p>
+</div>
+</div>
+
+<div class="bg-white rounded-xl shadow-lg overflow-hidden text-center">
+<img src="images/team3.jpg" alt="Ch. Venkatesh" class="gallery-photo" onclick="openImage(this)">
+<div class="p-5">
+<h3 class="font-bold text-ocean text-lg">Ch. Venkatesh</h3>
+<p class="text-gray-500">Researcher</p>
+</div>
+</div>
+
+<div class="bg-white rounded-xl shadow-lg overflow-hidden text-center">
+<img src="images/team4.jpg" alt="B. Tharun" class="gallery-photo" onclick="openImage(this)">
+<div class="p-5">
+<h3 class="font-bold text-ocean text-lg">B. Tharun</h3>
+<p class="text-gray-500">Field Reporter</p>
+</div>
+</div>
+
+</div>
+</div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+
+<footer class="bg-ocean text-white py-8 text-center">
+<p class="text-gray-300">
+© 2026 Marine Products CSP. Built with dedication.
+</p>
+</footer>
+
+<!-- IMAGE POPUP -->
+
+<div id="image-modal" onclick="closeImage()">
+
+<button id="close-modal" onclick="closeImage()">×</button>
+
+<img id="large-image" src="" alt="Large Image Preview"
+onclick="event.stopPropagation()">
+
+</div>
+
+<!-- JAVASCRIPT -->
+
+<script>
+
+// Show Home page when website opens
+document.addEventListener('DOMContentLoaded', function() {
+    switchPage('home-page');
+});
+
+// Switch between main pages
+function switchPage(targetPageId) {
+
+    document.querySelectorAll('.page-section').forEach(function(page) {
+        page.classList.add('hidden');
+    });
+
+    const target = document.getElementById(targetPageId);
+
+    if (target) {
+        target.classList.remove('hidden');
+    }
+
+    window.scrollTo(0, 0);
+}
+
+// Show weekly activity sections
+function showSubSection(sectionId) {
+
+    document.getElementById('home-buttons-grid').classList.add('hidden');
+
+    document.querySelectorAll('.sub-section').forEach(function(section) {
+        section.classList.add('hidden');
+    });
+
+    document.getElementById(sectionId).classList.remove('hidden');
+
+    window.scrollTo(0, 200);
+}
+
+// Back to home menu
+function backToHomeGrid() {
+
+    document.querySelectorAll('.sub-section').forEach(function(section) {
+        section.classList.add('hidden');
+    });
+
+    document.getElementById('home-buttons-grid').classList.remove('hidden');
+
+}
+
+// Mobile menu
+function toggleMobileMenu() {
+
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+
+}
+
+// Open large image
+function openImage(imgElement) {
+
+    const modal = document.getElementById('image-modal');
+    const largeImage = document.getElementById('large-image');
+
+    largeImage.src = imgElement.src;
+
+    modal.style.display = 'flex';
+
+    document.body.style.overflow = 'hidden';
+
+}
+
+// Close image
+function closeImage() {
+
+    document.getElementById('image-modal').style.display = 'none';
+
+    document.body.style.overflow = 'auto';
+
+}
+
+// Escape key
+document.addEventListener('keydown', function(event) {
+
+    if (event.key === 'Escape') {
+        closeImage();
+    }
+
+});
+
+</script>
 
 </body>
 </html>
